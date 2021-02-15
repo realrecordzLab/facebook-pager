@@ -11,7 +11,7 @@ const child = new (forever.Monitor)(script, {
 child.start();
 
 child.on('start', (process) => {
-    console.log('pager.js script started.', process);
+    console.log('pager.js script started.');
 });
 
 child.on('restart', () => {

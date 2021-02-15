@@ -18,6 +18,7 @@ if( !fs.existsSync(appStateFile) ){
         });
         fs.writeFileSync(appStateFile, JSON.stringify(api.getAppState()));
         console.log('appstate.json file saved!');
+        console.log('Listening for incoming messages...')
         api.listenMqtt( (err, event) => {
             if(err){ 
                 return console.log(err);
@@ -44,6 +45,7 @@ if( !fs.existsSync(appStateFile) ){
         api.setOptions({
             listenEvents: true
         });
+        console.log('Listening for incoming messages...')
         api.listenMqtt( (err, event) => {
             if(err){ 
                 return console.log(err);
