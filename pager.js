@@ -4,6 +4,7 @@ const fs = require('fs');
 const fb = require('facebook-chat-api'); 
 const path = require('path');
 const appStateFile = path.format({dir: __dirname, base: 'appstate.json'});
+let username;
 
 console.log('Starting pager bot...');
 if( !fs.existsSync(appStateFile) ){
@@ -28,8 +29,11 @@ if( !fs.existsSync(appStateFile) ){
                     if(err){
                         return console.log(err);
                     }
-                    console.log(`New message from ${user} \n${event.body}`);
-                    api.sendMessage(`FB Pager v1.0\nCiao ${user.name}!Il tuo messaggio è stato inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID)
+                    for(var prop in user){
+                        username = user[prop].name;
+                    }  
+                    console.log(`New message from ${username}:\n${event.body}`);
+                    api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio è stato inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID)
                 });
             }
         });
@@ -55,11 +59,11 @@ if( !fs.existsSync(appStateFile) ){
                     if(err){
                         return console.log(err);
                     }
-                    //debug
-                    console.log(user['name'], user.name);
-
-                    console.log(`New message from ${user} \n${event.body}`);
-                    api.sendMessage(`FB Pager v1.0\nCiao ${user.name}!Il tuo messaggio è stato inoltrato tramite email.\n Riceverai risposta quando sarò nuovamente online.`, event.threadID)
+                    for(var prop in user){
+                        username = user[prop].name;
+                    }                    
+                    console.log(`New message from ${username}:\n${event.body}`);
+                    api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio è stato inoltrato tramite email.\n Riceverai risposta quando sarò nuovamente online.`, event.threadID)
                 });
             }
         });
