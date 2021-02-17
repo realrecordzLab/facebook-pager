@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const path = require('path');
 const forever = require('forever-monitor');
 const script = path.format({dir: __dirname, base: 'pager.js'});
@@ -16,7 +15,7 @@ child.on('start', (process) => {
 });
 
 child.on('restart', () => {
-    console.error(`Forever restarting script for ${child.times} time`);
+    console.log(`Forever restarting script for ${child.times} time`);
 });
 
 child.on('exit:code', (code) => {
