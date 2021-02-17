@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-const forever = require('forever-monitor');
+
 const path = require('path');
+const forever = require('forever-monitor');
 const script = path.format({dir: __dirname, base: 'pager.js'});
 
 const child = new (forever.Monitor)(script, {
     max: 2,
-    silent: false
+    silent: false,
 });
 
 child.start();
