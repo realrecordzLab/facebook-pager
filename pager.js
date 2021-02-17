@@ -37,11 +37,11 @@ if( !fs.existsSync(appStateFile) ){
                         username = user[prop].name;
                     }  
                 });
-                if( !repliedTo.includes(event.senderID) ){
-                    repliedTo.push(event.senderID);
+                if( !repliedTo.includes(event.threadID) ){
+                    repliedTo.push(event.threadID);
                     api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio è stato inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID)
                 }
-                showNotification(username, event.body);
+                //showNotification(username, event.body);
                 console.log(`New message from ${username}:\n${event.body}`);
             }
         });
@@ -71,11 +71,11 @@ if( !fs.existsSync(appStateFile) ){
                         username = user[prop].name;
                     }                    
                 });
-                if( !repliedTo.includes(event.senderID) ){
-                    repliedTo.push(event.senderID);
+                if( !repliedTo.includes(event.threadID) ){
+                    repliedTo.push(event.threadID);
                     api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio sarà inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID);
                 }
-                showNotification(username, event.body);
+                //showNotification(username, event.body);
                 console.log(`New message from ${username}:\n${event.body}`);
             }
         });
