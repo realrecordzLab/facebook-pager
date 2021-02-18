@@ -34,14 +34,14 @@ if( !fs.existsSync(appStateFile) ){
                     }
                     for( var prop in user ){
                         username = user[prop].name;
-                    }  
+                    } 
+                    if( !repliedTo.includes(event.threadID) ){
+                        repliedTo.push(event.threadID);
+                        api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio è stato inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID)
+                    }
+                    //showNotification(username, event.body);
+                    console.log(chalk`{yellow.bold New message from ${username}:}\n${event.body}`);
                 });
-                if( !repliedTo.includes(event.threadID) ){
-                    repliedTo.push(event.threadID);
-                    api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio è stato inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID)
-                }
-                //showNotification(username, event.body);
-                console.log(chalk`{yellow.bold New message from ${username}:}\n${event.body}`);
             }
         });
     });
@@ -68,14 +68,14 @@ if( !fs.existsSync(appStateFile) ){
                     }
                     for(var prop in user){
                         username = user[prop].name;
-                    }                    
+                    }
+                    if( !repliedTo.includes(event.threadID) ){
+                        repliedTo.push(event.threadID);
+                        api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio sarà inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID);
+                    }
+                    //showNotification(username, event.body);
+                    console.log(chalk`{yellow.bold New message from ${username}:}\n${event.body}`);
                 });
-                if( !repliedTo.includes(event.threadID) ){
-                    repliedTo.push(event.threadID);
-                    api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio sarà inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID);
-                }
-                //showNotification(username, event.body);
-                console.log(chalk`{yellow.bold New message from ${username}:}\n${event.body}`);
             }
         });
     });
