@@ -9,62 +9,86 @@ const appStateFile = path.format({dir: __dirname, base: 'appstate.json'});
 let username;
 let repliedTo = [];
 
-console.log(chalk.yellow.bold('Starting pager bot...'));
+console.log(chalk.magenta.bold('Starting Facebook Pager...'));
+
+const appLogFile = path.format({dir: __dirname, base: `${Date.now()}.txt`});
+const appLog = fs.createWriteStream(appLogFile, {flags: 'a+'});
+
+console.log(chalk`{magenta.bold Log file created in ${appLogFile}}`);
 
 if( !fs.existsSync(appStateFile) ){
-    //debug .env
-    fb({email: process.env.FB_EMAIL, password: process.env.FB_PWD}, (err, api) => {
+    console.log(chalk.yellowBright.bold('appstate.json file not found. Logging in with .env file credentials...'));
+    fb({email: process.env.FB_EMAIL, password: process.env.FB_PWD}, (err, api) => {       
         if( err ){ 
-            return console.log(chalk.red.bold(err));
+            appLog.write(err.error);
+            appLog.end();
+            return console.log(chalk.red.bold(err.error));
         }
-        fs.writeFileSync(appStateFile, JSON.stringify(api.getAppState()));
-        console.log(chalk.magenta.bold('appstate.json file saved!'));
         api.setOptions({
             listenEvents: true
         });
-        console.log(chalk.yellow.bold('Listening for incoming messages...'));    
+
+        fs.writeFileSync(appStateFile, JSON.stringify(api.getAppState()));
+        console.log(chalk.yellowBright.bold('appstate.json file created!'));
+        console.log(chalk.magenta.bold('Listening for incoming messages...')); 
         api.listenMqtt( (err, event) => {
-            if( err ){ 
-                return console.log(chalk.red.bold(err));
+            if( err ){
+                appLog.write(err.error); 
+                appLog.end();
+                return console.log(chalk.red.bold(err.error));
             }
             if( event.type === 'message' ){
                 api.getUserInfo(event.senderID, (err, user) => {
                     if( err ){
-                        return console.log(chalk.red.bold(err));
+                        appLog.write(err.error);
+                        appLog.end();
+                        return console.log(chalk.red.bold(err.error));
                     }
                     for( var prop in user ){
                         username = user[prop].name;
                     } 
+
                     if( !repliedTo.includes(event.threadID) ){
                         repliedTo.push(event.threadID);
                         api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio è stato inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID)
                     }
-                    //showNotification(username, event.body);
-                    console.log(chalk`{yellow.bold New message from ${username}:}\n${event.body}`);
+
+                    showNotification(username, event.body);
+                    console.log(chalk`{magenta.bold New message from ${username}:}\n${event.body}`); 
+
+                    appLog.write(`${username}:`);
+                    appLog.write(event.body);
                 });
             }
         });
     });
 }else{
-    console.log(chalk.magenta.bold('Loading appstate.json file!'));
+    console.log(chalk.yellowBright.bold('Loading appstate.json file!'));
     fb({appState: JSON.parse(fs.readFileSync(appStateFile))}, (err, api) => {
         if( err ){ 
-            return console.log(chalk.red.bold(err));
+            appLog.write(err.error);
+            appLog.end();
+            return console.log(chalk.red.bold(err.error));
         }
-        fs.writeFileSync(appStateFile, JSON.stringify(api.getAppState()));
-        console.log(chalk.magenta.bold('appstate.json file updated!'));
         api.setOptions({
             listenEvents: true
         });
-        console.log(chalk.yellow.bold('Listening for incoming messages...'));
+
+        fs.writeFileSync(appStateFile, JSON.stringify(api.getAppState()));
+        console.log(chalk.yellowBright.bold('appstate.json file updated!'));
+        console.log(chalk.magenta.bold('Listening for incoming messages...'));
         api.listenMqtt( (err, event) => {
             if( err ){ 
-                return console.log(chalk.red.bold(err));
+                appLog.write(err.error);
+                appLog.end();
+                return console.log(chalk.red.bold(err.error));
             }
             if( event.type === 'message' ){
                 api.getUserInfo(event.senderID, (err, user) => {
                     if( err ){
-                        return console.log(chalk.red.bold(err));
+                        appLog.write(err.error);
+                        appLog.end();
+                        return console.log(chalk.red.bold(err.error));
                     }
                     for(var prop in user){
                         username = user[prop].name;
@@ -73,8 +97,12 @@ if( !fs.existsSync(appStateFile) ){
                         repliedTo.push(event.threadID);
                         api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio sarà inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID);
                     }
-                    //showNotification(username, event.body);
-                    console.log(chalk`{yellow.bold New message from ${username}:}\n${event.body}`);
+
+                    showNotification(username, event.body);
+                    console.log(chalk`{magenta.bold New message from ${username}:}\n${event.body}`);
+                    
+                    appLog.write(`${username}:`);
+                    appLog.write(event.body);
                 });
             }
         });

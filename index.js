@@ -2,6 +2,13 @@
 const path = require('path');
 const forever = require('forever-monitor');
 const script = path.format({dir: __dirname, base: 'pager.js'});
+const chalk = require('chalk');
+
+const header = `
++---------------------+  
+| Facebook Pager v1.0 |
++---------------------+
+`;
 
 const child = new (forever.Monitor)(script, {
     max: 2,
@@ -11,7 +18,7 @@ const child = new (forever.Monitor)(script, {
 child.start();
 
 child.on('start', (process) => {
-    console.log('pager.js script started.');
+    console.log(chalk.magenta.bold(header));
 });
 
 child.on('restart', () => {
