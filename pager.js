@@ -5,6 +5,11 @@ const fb = require('facebook-chat-api');
 const chalk = require('chalk');
 const { showNotification } = require('./notifications');
 const appStateFile = path.format({dir: __dirname, base: 'appstate.json'});
+const options = {
+    //userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36',
+    userAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Mobile Safari/537.36',
+    listenEvents: true
+}
 
 let username;
 let repliedTo = [];
@@ -18,7 +23,7 @@ console.log(chalk`{magenta.bold Log file created in ${appLogFile}}`);
 
 if( !fs.existsSync(appStateFile) ){
     console.log(chalk.yellowBright.bold('appstate.json file not found. Logging in with .env file credentials...'));
-    fb({email: process.env.FB_EMAIL, password: process.env.FB_PWD}, (err, api) => {       
+    fb({email: process.env.FB_EMAIL, password: process.env.FB_PWD}, options, (err, api) => {       
         if( err ){ 
             appLog.write(err.error);
             appLog.end();
