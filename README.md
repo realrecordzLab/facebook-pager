@@ -8,10 +8,13 @@ I've made this script for fun and as an exercise with nodejs but I'm planning to
 
 #### USAGE
 
-Before you can use the script, you need to create your custom `.env` file inside the repo folder. It will contain your login credentials.  
+Before you can use the script, you need to create your custom `.env` file inside the repo folder. It will contain your login credentials. Don't share it with anyone.  
 ```
 FB_EMAIL = yourfacebook@email.com
 FB_PWD = yourSuperSecretPassword 
+GMAIL_USER = youremail@gmail.com
+GMAIL_PWD = yourGmailPassword
+FORCE_COLOR = 1
 ```
 
 ```
@@ -22,6 +25,9 @@ $ facebook-pager npm install
 // run the script
 $ facebook-pager node index.js
 ```
+
+To enable the message forward on an email address using Gmail, you need to [configure your account first](https://blog.mailtrap.io/nodemailer-gmail/). 
+
 
 
 
