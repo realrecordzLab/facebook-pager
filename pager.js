@@ -3,13 +3,19 @@ require('dotenv').config({path: path.resolve(__dirname, '.env')});
 const fs = require('fs');
 const fb = require('facebook-chat-api'); 
 const chalk = require('chalk');
-const { showNotification } = require('./notifications');
+const { showNotification, forwardMessage } = require('./notifications');
 const appStateFile = path.format({dir: __dirname, base: 'appstate.json'});
 const options = {
     //userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36',
     userAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Mobile Safari/537.36',
     listenEvents: true
 }
+
+// uncomment the lines below to enable email message forward
+// const config = {
+//     user: process.env.GMAIL_USER,
+//     password: process.env.GMAIL_PWD
+// }
 
 let username;
 let repliedTo = [];
@@ -59,10 +65,12 @@ if( !fs.existsSync(appStateFile) ){
                     }
 
                     showNotification(username, event.body);
+                    // uncomment the line below to enable email message forward
+                    //forwardMessage(config, username, event.body);
                     console.log(chalk`{magenta.bold New message from ${username}:}\n${event.body}`); 
 
-                    appLog.write(`${username}:`);
-                    appLog.write(event.body);
+                    appLog.write(`${username}:\n`);
+                    appLog.write(`${event.body}\n`);
                 });
             }
         });
@@ -104,10 +112,12 @@ if( !fs.existsSync(appStateFile) ){
                     }
 
                     showNotification(username, event.body);
+                    // uncomment the line below to enable email message forward
+                    //forwardMessage(config, username, event.body);
                     console.log(chalk`{magenta.bold New message from ${username}:}\n${event.body}`);
                     
-                    appLog.write(`${username}:`);
-                    appLog.write(event.body);
+                    appLog.write(`${username}:\n`);
+                    appLog.write(`${event.body}\n`);
                 });
             }
         });

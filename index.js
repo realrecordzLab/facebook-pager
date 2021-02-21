@@ -3,16 +3,19 @@ const path = require('path');
 const forever = require('forever-monitor');
 const script = path.format({dir: __dirname, base: 'pager.js'});
 const chalk = require('chalk');
+//TODO customizable bot message
+//const commander = require('commander');
 
 const header = `
 +---------------------+  
-| Facebook Pager v1.0 |
+| Facebook Pager v1.2 |
 +---------------------+
 `;
 
 const child = new (forever.Monitor)(script, {
     max: 2,
     silent: false,
+    //args: []
 });
 
 child.start();
@@ -28,4 +31,3 @@ child.on('restart', () => {
 child.on('exit:code', (code) => {
     console.log(`Forever detected script exited with code ${code}`);
 });
-
