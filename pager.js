@@ -53,7 +53,7 @@ if( !fs.existsSync(appStateFile) ){
 
                     if( !repliedTo.includes(event.threadID) ){
                         repliedTo.push(event.threadID);
-                        api.sendMessage(botMessage, event.threadID);
+                        api.sendMessage(`Facebook Pager v1.3\n${botMessage}`, event.threadID);
                     }
 
                     showNotification(username, event.body);
@@ -99,7 +99,7 @@ if( !fs.existsSync(appStateFile) ){
                     }
                     if( !repliedTo.includes(event.threadID) ){
                         repliedTo.push(event.threadID);
-                        api.sendMessage(botMessage, event.threadID);
+                        api.sendMessage(`Facebook Pager v1.3\n${botMessage}`, event.threadID);
                     }
 
                     showNotification(username, event.body);
