@@ -3,31 +3,35 @@ const path = require('path');
 const forever = require('forever-monitor');
 const script = path.format({dir: __dirname, base: 'pager.js'});
 const chalk = require('chalk');
-//TODO customizable bot message
-//const commander = require('commander');
+const commander = require('commander');
 
 const header = `
 +---------------------+  
-| Facebook Pager v1.2 |
+| Facebook Pager v1.3 |
 +---------------------+
 `;
 
-const child = new (forever.Monitor)(script, {
-    max: 2,
-    silent: false,
-    //args: []
-});
+commander.version('1.3.0')
+.option('-m, --message <text>', 'set custom bot message')
+.action( (options) => {
+    const child = new (forever.Monitor)(script, {
+        max: 2,
+        silent: false,
+        args: [options.message]
+    });
 
-child.start();
+    child.start();
 
-child.on('start', (process) => {
-    console.log(chalk.magenta.bold(header));
-});
+    child.on('start', (process) => {
+        console.log(chalk.magenta.bold(header));
+    });
 
-child.on('restart', () => {
-    console.log(`Forever restarting script for ${child.times} time`);
-});
+    child.on('restart', () => {
+        console.log(`Forever restarting script for ${child.times} time`);
+    });
 
-child.on('exit:code', (code) => {
-    console.log(`Forever detected script exited with code ${code}`);
-});
+    child.on('exit:code', (code) => {
+        console.log(`Forever detected script exited with code ${code}`);
+    });
+
+}).parse();

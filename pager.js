@@ -3,19 +3,13 @@ require('dotenv').config({path: path.resolve(__dirname, '.env')});
 const fs = require('fs');
 const fb = require('facebook-chat-api'); 
 const chalk = require('chalk');
-const { showNotification, forwardMessage } = require('./notifications');
+const { showNotification } = require('./notifications');
 const appStateFile = path.format({dir: __dirname, base: 'appstate.json'});
+const botMessage = process.argv[2];
 const options = {
-    //userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36',
     userAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Mobile Safari/537.36',
     listenEvents: true
 }
-
-// uncomment the lines below to enable email message forward
-// const config = {
-//     user: process.env.GMAIL_USER,
-//     password: process.env.GMAIL_PWD
-// }
 
 let username;
 let repliedTo = [];
@@ -61,12 +55,10 @@ if( !fs.existsSync(appStateFile) ){
 
                     if( !repliedTo.includes(event.threadID) ){
                         repliedTo.push(event.threadID);
-                        api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio è stato inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID)
+                        api.sendMessage(botMessage, event.threadID);
                     }
 
                     showNotification(username, event.body);
-                    // uncomment the line below to enable email message forward
-                    //forwardMessage(config, username, event.body);
                     console.log(chalk`{magenta.bold New message from ${username}:}\n${event.body}`); 
 
                     appLog.write(`${username}:\n`);
@@ -108,12 +100,10 @@ if( !fs.existsSync(appStateFile) ){
                     }
                     if( !repliedTo.includes(event.threadID) ){
                         repliedTo.push(event.threadID);
-                        api.sendMessage(`FB Pager v1.0\nCiao ${username}!Il tuo messaggio sarà inoltrato tramite email.\nRiceverai risposta quando sarò nuovamente online.`, event.threadID);
+                        api.sendMessage(botMessage, event.threadID);
                     }
 
                     showNotification(username, event.body);
-                    // uncomment the line below to enable email message forward
-                    //forwardMessage(config, username, event.body);
                     console.log(chalk`{magenta.bold New message from ${username}:}\n${event.body}`);
                     
                     appLog.write(`${username}:\n`);
