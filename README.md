@@ -1,4 +1,6 @@
 # facebook-pager
+![scren](https://github.com/realrecordzLab/facebook-pager/blob/main/docs/screen.png "Facebook Pager screen")
+
 This is a simple bot for facebook messenger personal account, it will listen for new incoming messages and will autoreply to inform your contacts that you are not connected at the moment. All the messages are displayed inside the terminal window that is executing the process. 
 Under the hood the script use the [facebook chat api](https://github.com/Schmavery/facebook-chat-api) that is responsable to intercept messages received and [forever monitor](https://github.com/foreversd/forever-monitor) that will run the script until the terminal is closed. 
 
