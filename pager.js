@@ -29,12 +29,10 @@ if( !fs.existsSync(appStateFile) ){
             appLog.end();
             return console.log(chalk.red.bold(err.error));
         }
-        api.setOptions({
-            listenEvents: true
-        });
-
+        
         fs.writeFileSync(appStateFile, JSON.stringify(api.getAppState()));
         console.log(chalk.yellowBright.bold('appstate.json file created!'));
+        
         console.log(chalk.magenta.bold('Listening for incoming messages...')); 
         api.listenMqtt( (err, event) => {
             if( err ){
@@ -81,6 +79,7 @@ if( !fs.existsSync(appStateFile) ){
 
         fs.writeFileSync(appStateFile, JSON.stringify(api.getAppState()));
         console.log(chalk.yellowBright.bold('appstate.json file updated!'));
+        
         console.log(chalk.magenta.bold('Listening for incoming messages...'));
         api.listenMqtt( (err, event) => {
             if( err ){ 
