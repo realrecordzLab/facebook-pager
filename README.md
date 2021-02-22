@@ -1,4 +1,6 @@
 # facebook-pager
+### A simple bot to automate messages reply for facebook personal account
+
 ![scren](https://github.com/realrecordzLab/facebook-pager/blob/main/docs/screen.png "Facebook Pager screen")
 
 This is a simple bot for facebook messenger personal account, it will listen for new incoming messages and will autoreply to inform your contacts that you are not connected at the moment. All the messages are displayed inside the terminal window that is executing the process. 
